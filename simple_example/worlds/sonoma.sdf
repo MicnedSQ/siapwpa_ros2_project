@@ -334,8 +334,8 @@
             <pose>0 0 0 0 0 0</pose>
             <horizontal_fov>2.0</horizontal_fov>
             <image>
-              <width>800</width>
-              <height>800</height>
+              <width>1920</width>
+              <height>1080</height>
               <format>RGB_INT8</format>
               <anti_aliasing>4</anti_aliasing>
             </image>

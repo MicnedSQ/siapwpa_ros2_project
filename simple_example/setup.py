@@ -28,8 +28,9 @@ setup(
     entry_points={
         'console_scripts': [
             'ros_gazebo_ex = simple_example.simple_example_node:main',
-            'track_controller = simple_example.track_controller_node:main'
-
+            'track_controller = simple_example.track_controller_node:main',
+            'process_image = simple_example.ProcessImageNode:main',
+            'controller_node = simple_example.ControllerNode:main'
         ],
     },
 )
