@@ -21,19 +21,29 @@ class ControllerNode(Node):
     centroids_pairs = [(centroids[i], centroids[i+1]) for i in range(0, len(centroids), 2)]
     
     centroid_left = [0, 0]
-    centroid_right = [10000, 10000]
+    centroid_right = [1920, 1080]
+    left = False
+    right = False
 
     for centroid in centroids_pairs:
         if centroid[0] < (1920 / 2):
            if centroid[0] > centroid_left[0]:
-              if centroid[1] > (1080 / 2) - 200:
+              if centroid[1] > (1080 / 2) - 100:
                 centroid_left = centroid
+                left = True
         else:
            if centroid[0] < centroid_right[0]:
-              if centroid[1] > (1080 / 2) - 200:
+              if centroid[1] > (1080 / 2) - 100:
                 centroid_right = centroid
+                right = True
 
-    center = (centroid_left[0] + centroid_right[0]) / 2
+    if left and right:
+      center = (centroid_left[0] + centroid_right[0]) / 2
+    elif left:
+       center = centroid_left[0] + 100
+    else:
+       center = centroid_right[0] - 100
+
     screen_center = 1920 / 2
 
     offset = center - screen_center
@@ -41,7 +51,7 @@ class ControllerNode(Node):
     steering_factor = 0.01
     output_cmd_vel.angular.z = -steering_factor * offset
 
-    output_cmd_vel.linear.x = 3.0
+    output_cmd_vel.linear.x = 8.0
 
     self.cmd_vel_publisher.publish(output_cmd_vel)
 

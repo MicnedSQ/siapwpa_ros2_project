@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from centroids_msg.msg import Centroids
+from skimage.morphology import skeletonize
 
 class ProcessImageNode(Node):
   def __init__(self):
@@ -85,6 +86,7 @@ class ProcessImageNode(Node):
     out_img = np.dstack((binary_mask, binary_mask, binary_mask)) * 255
 
     centroids_list = []
+    bounding_boxes = []
 
     counter = 0 
     for i, contour in enumerate(contours):
@@ -92,6 +94,11 @@ class ProcessImageNode(Node):
       if area > 10000:
         counter += 1
         M = cv2.moments(contour)
+
+        x, y, w, h = cv2.boundingRect(contour)
+
+        bounding_boxes.append([x, y, w, h])
+
         if M['m00'] != 0:
           cx = int(M['m10'] / M['m00'])
           cy = int(M['m01'] / M['m00'])
@@ -99,11 +106,36 @@ class ProcessImageNode(Node):
         else:
           cx, cy = 0, 0
         cv2.circle(out_img, (cx, cy), 5, (255, 0, 0), -1)
-        cv2.drawContours(out_img, [contour], -1, (0, 255, 0), 2)
+        cv2.drawContours(out_img, [contour], -1, (0, 255, 0), cv2.FILLED)
 
+    gray = cv2.cvtColor(out_img, cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(gray, 1, 255, cv2.THRESH_BINARY)
+
+    binary_bool = binary > 0
+    skeleton = skeletonize(binary_bool).astype(np.uint8) * 255
+
+    branch_points = []
+
+    for box in bounding_boxes:
+      x_start, y_start, width, height = box
+      x_end = x_start + width
+      y_end = y_start + height
+      for y in range(y_start + 1, y_end - 1):
+        for x in range(x_start + 1, x_end - 1):
+            if skeleton[y, x] == 255:
+                neighborhood = skeleton[y - 1:y + 2, x - 1:x + 2]
+                
+                neighbor_count = np.count_nonzero(neighborhood) - 1
+
+                if neighbor_count > 2:
+                    branch_points.append((x, y))
+                    self.get_logger().info(f'x: {x}, y:{y}')
+                    cv2.circle(out_img, (x, y), 5, (0, 0, 255), -1)
+
+    cv2.namedWindow("Skeletonized Image", cv2.WINDOW_NORMAL)
+    cv2.imshow("Skeletonized Image", skeleton)
+    cv2.waitKey(1)
     self.send_msg(centroids_list)
-
-    self.get_logger().info('NO lines: %s' % str(counter))
 
     cv2.namedWindow("Birdseye out_img", cv2.WINDOW_NORMAL)
     cv2.imshow("Birdseye out_img", out_img)
