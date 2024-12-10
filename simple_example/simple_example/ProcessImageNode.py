@@ -25,8 +25,8 @@ class ProcessImageNode(Node):
       self.frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
 
       birdseye = self.perspectiveWarp()
-
-      self.processImage(birdseye)
+      resized_frame = cv2.resize(birdseye, (960, 540))
+      self.processImage(resized_frame)
 
       self.display_image()
     except Exception as e:
@@ -93,19 +93,19 @@ class ProcessImageNode(Node):
       area = cv2.contourArea(contour)
       if area > 10000:
         counter += 1
-        M = cv2.moments(contour)
+        # M = cv2.moments(contour)
 
         x, y, w, h = cv2.boundingRect(contour)
 
         bounding_boxes.append([x, y, w, h])
 
-        if M['m00'] != 0:
-          cx = int(M['m10'] / M['m00'])
-          cy = int(M['m01'] / M['m00'])
-          centroids_list.append([cx, cy])
-        else:
-          cx, cy = 0, 0
-        cv2.circle(out_img, (cx, cy), 5, (255, 0, 0), -1)
+        # if M['m00'] != 0:
+        #   cx = int(M['m10'] / M['m00'])
+        #   cy = int(M['m01'] / M['m00'])
+        #   centroids_list.append([cx, cy])
+        # else:
+        #   cx, cy = 0, 0
+        # cv2.circle(out_img, (cx, cy), 5, (255, 0, 0), -1)
         cv2.drawContours(out_img, [contour], -1, (0, 255, 0), cv2.FILLED)
 
     gray = cv2.cvtColor(out_img, cv2.COLOR_BGR2GRAY)
@@ -120,17 +120,96 @@ class ProcessImageNode(Node):
       x_start, y_start, width, height = box
       x_end = x_start + width
       y_end = y_start + height
-      for y in range(y_start + 1, y_end - 1):
-        for x in range(x_start + 1, x_end - 1):
-            if skeleton[y, x] == 255:
-                neighborhood = skeleton[y - 1:y + 2, x - 1:x + 2]
-                
-                neighbor_count = np.count_nonzero(neighborhood) - 1
 
-                if neighbor_count > 2:
-                    branch_points.append((x, y))
-                    self.get_logger().info(f'x: {x}, y:{y}')
-                    cv2.circle(out_img, (x, y), 5, (0, 0, 255), -1)
+      roi = skeleton[y_start:y_end, x_start:x_end]
+
+      padded_roi = np.pad(roi, pad_width=1, mode='constant', constant_values=0)
+
+      kernel = np.ones((3, 3), dtype=np.uint16)
+      neighborhood_sum = cv2.filter2D(padded_roi.astype(np.uint16), -1, kernel)[1:-1, 1:-1]
+
+      branch_point_mask = (roi == 255) & (neighborhood_sum > 3 * 255)
+
+      cv2.imshow("Neighborhood Sum", (branch_point_mask * 255).astype(np.uint8))
+
+      branch_point_coords = np.argwhere(branch_point_mask)
+
+      branch_point_coords += [y_start, x_start]
+
+      branch_points.extend(branch_point_coords.tolist())
+
+    for y, x in branch_points:
+        if x > 1920 / 2:
+          cv2.circle(out_img, (x, y), 5, (0, 0, 255), -1)
+
+          if x + 1 < skeleton.shape[1] and skeleton[y, x + 1] == 255:
+              for i in range(x + 1, skeleton.shape[1]):
+                  if skeleton[y, i] == 255:
+                      if i == x + 1:
+                        continue
+                      skeleton[y, i] = 0
+                  else:
+                      break
+          if x + 1 < skeleton.shape[1] and y - 1 >= 0 and skeleton[y - 1, x + 1] == 255:
+            i = 1
+            while x + i < skeleton.shape[1] and y - i >= 0:
+                if skeleton[y - i, x + i] == 255:
+                    skeleton[y - i, x + i] = 0
+                else:
+                    break
+                i += 1
+        else:
+          cv2.circle(out_img, (x, y), 5, (0, 0, 255), -1)
+
+          if x - 1 >= 0 and skeleton[y, x - 1] == 255:
+              for i in range(x - 1, -1, -1):
+                  if skeleton[y, i] == 255:
+                      if i == x - 1:
+                          continue
+                      skeleton[y, i] = 0
+                  else:
+                      break
+
+          if x - 1 >= 0 and y - 1 >= 0 and skeleton[y - 1, x - 1] == 255:
+              i = 1
+              while x - i >= 0 and y - i >= 0:
+                  if skeleton[y - i, x - i] == 255:
+                      skeleton[y - i, x - i] = 0
+                  else:
+                      break
+                  i += 1
+           
+    num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(skeleton)
+
+    areas = stats[:, cv2.CC_STAT_AREA]
+    sorted_indices = np.argsort(areas)[::-1]
+
+    largest_components_mask = np.zeros_like(skeleton)
+
+    # centroid_lst = []
+    
+    for i in sorted_indices[1:3]:
+        component_label = i
+        largest_components_mask = np.zeros_like(skeleton)
+        largest_components_mask[labels == component_label] = 255
+
+        M = cv2.moments(largest_components_mask)
+        if M['m00'] != 0:
+            cx = int(M['m10'] / M['m00'])
+            cy = int(M['m01'] / M['m00'])
+            centroids_list.append((cx * 2, cy * 2))
+            
+            cv2.circle(out_img, (cx, cy), 10, (0, 0, 255), -1)
+        else:
+            centroids_list.append((0, 0))
+
+    skeleton_with_largest_components = cv2.bitwise_and(skeleton, largest_components_mask)
+
+    labels_colored = cv2.applyColorMap(skeleton_with_largest_components.astype(np.uint8), cv2.COLORMAP_JET)
+
+    cv2.namedWindow("Largest Connected Components", cv2.WINDOW_NORMAL)
+    cv2.imshow("Largest Connected Components", labels_colored)
+    cv2.waitKey(1)
 
     cv2.namedWindow("Skeletonized Image", cv2.WINDOW_NORMAL)
     cv2.imshow("Skeletonized Image", skeleton)

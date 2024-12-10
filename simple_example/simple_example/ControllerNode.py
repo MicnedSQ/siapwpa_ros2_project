@@ -11,8 +11,6 @@ class ControllerNode(Node):
 
     self.cmd_vel_publisher = self.create_publisher(Twist, "/cmd_vel", 10)
 
-    
-
   def steer_callback(self, msg):
     output_cmd_vel = Twist()
     length = msg.length
@@ -37,12 +35,13 @@ class ControllerNode(Node):
                 centroid_right = centroid
                 right = True
 
-    if left and right:
-      center = (centroid_left[0] + centroid_right[0]) / 2
-    elif left:
-       center = centroid_left[0] + 100
-    else:
-       center = centroid_right[0] - 100
+    center = (centroid_left[0] + centroid_right[0]) / 2
+    # if left and right:
+    #   center = (centroid_left[0] + centroid_right[0]) / 2
+    # elif left:
+    #    center = centroid_left[0] + 100
+    # else:
+    #    center = centroid_right[0] - 100
 
     screen_center = 1920 / 2
 
