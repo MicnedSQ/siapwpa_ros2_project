@@ -11,6 +11,16 @@ class ControllerNode(Node):
 
     self.cmd_vel_publisher = self.create_publisher(Twist, "/cmd_vel", 10)
 
+    self.kp = 0.0003
+    self.ki = 0.0007
+    self.kd = 0.007
+
+    self.previous_error = 0.0
+    self.integral = 0.0
+
+    self.start_time = self.get_clock().now()
+
+
   def steer_callback(self, msg):
     output_cmd_vel = Twist()
     length = msg.length
@@ -36,6 +46,7 @@ class ControllerNode(Node):
                 right = True
 
     center = (centroid_left[0] + centroid_right[0]) / 2
+
     # if left and right:
     #   center = (centroid_left[0] + centroid_right[0]) / 2
     # elif left:
@@ -45,14 +56,24 @@ class ControllerNode(Node):
 
     screen_center = 1920 / 2
 
-    offset = center - screen_center
+    error = center - screen_center
 
-    steering_factor = 0.01
-    output_cmd_vel.angular.z = -steering_factor * offset
+    time_delta = (self.get_clock().now() - self.start_time).nanoseconds / 1e9
 
-    output_cmd_vel.linear.x = 8.0
+    self.integral += error
+    max_integral = 1000.0
+    self.integral = max(min(self.integral, max_integral), -max_integral)
+    derivative = error - self.previous_error
+    self.previous_error = error
 
+    angular_z = -(self.kp * error + self.ki * self.integral * time_delta + self.kd * derivative / time_delta)
+
+    output_cmd_vel.angular.z = angular_z
+    output_cmd_vel.linear.x = 5.0
     self.cmd_vel_publisher.publish(output_cmd_vel)
+
+    # self.get_logger().info('Time now: %s' % str(time_delta))
+    self.start_time = self.get_clock().now()
 
 
 def main(args=None):

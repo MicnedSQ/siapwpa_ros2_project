@@ -130,7 +130,7 @@ class ProcessImageNode(Node):
 
       branch_point_mask = (roi == 255) & (neighborhood_sum > 3 * 255)
 
-      cv2.imshow("Neighborhood Sum", (branch_point_mask * 255).astype(np.uint8))
+      # cv2.imshow("Neighborhood Sum", (branch_point_mask * 255).astype(np.uint8))
 
       branch_point_coords = np.argwhere(branch_point_mask)
 

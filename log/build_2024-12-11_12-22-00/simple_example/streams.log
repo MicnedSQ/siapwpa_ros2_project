@@ -1,0 +1,59 @@
+[0.904s] Invoking command in '/home/developer/ros2_ws/src/simple_example': PYTHONPATH=/home/developer/ros2_ws/src/build/simple_example/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../build/simple_example build --build-base /home/developer/ros2_ws/src/build/simple_example/build install --record /home/developer/ros2_ws/src/build/simple_example/install.log --single-version-externally-managed install_data
+[1.275s] running egg_info
+[1.277s] creating ../build/simple_example/simple_example.egg-info
+[1.277s] writing ../build/simple_example/simple_example.egg-info/PKG-INFO
+[1.278s] writing dependency_links to ../build/simple_example/simple_example.egg-info/dependency_links.txt
+[1.278s] writing entry points to ../build/simple_example/simple_example.egg-info/entry_points.txt
+[1.279s] writing requirements to ../build/simple_example/simple_example.egg-info/requires.txt
+[1.279s] writing top-level names to ../build/simple_example/simple_example.egg-info/top_level.txt
+[1.279s] writing manifest file '../build/simple_example/simple_example.egg-info/SOURCES.txt'
+[1.282s] reading manifest file '../build/simple_example/simple_example.egg-info/SOURCES.txt'
+[1.284s] writing manifest file '../build/simple_example/simple_example.egg-info/SOURCES.txt'
+[1.284s] running build
+[1.284s] running build_py
+[1.285s] creating /home/developer/ros2_ws/src/build/simple_example/build
+[1.285s] creating /home/developer/ros2_ws/src/build/simple_example/build/lib
+[1.285s] creating /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+[1.285s] copying simple_example/simple_example_node.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+[1.285s] copying simple_example/track_controller_node.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+[1.286s] copying simple_example/ControllerNode.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+[1.286s] copying simple_example/__init__.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+[1.286s] copying simple_example/ProcessImageNode.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+[1.286s] running install
+[1.286s] running install_lib
+[1.289s] creating /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+[1.289s] copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/simple_example_node.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+[1.289s] copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/track_controller_node.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+[1.289s] copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/ControllerNode.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+[1.289s] copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/__init__.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+[1.289s] copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/ProcessImageNode.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+[1.290s] byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/simple_example_node.py to simple_example_node.cpython-310.pyc
+[1.290s] byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/track_controller_node.py to track_controller_node.cpython-310.pyc
+[1.293s] byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/ControllerNode.py to ControllerNode.cpython-310.pyc
+[1.294s] byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/__init__.py to __init__.cpython-310.pyc
+[1.294s] byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/ProcessImageNode.py to ProcessImageNode.cpython-310.pyc
+[1.297s] running install_data
+[1.298s] creating /home/developer/ros2_ws/src/install/simple_example/share/ament_index
+[1.298s] creating /home/developer/ros2_ws/src/install/simple_example/share/ament_index/resource_index
+[1.298s] creating /home/developer/ros2_ws/src/install/simple_example/share/ament_index/resource_index/packages
+[1.298s] copying resource/simple_example -> /home/developer/ros2_ws/src/install/simple_example/share/ament_index/resource_index/packages
+[1.298s] copying package.xml -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example
+[1.298s] creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/launch
+[1.299s] copying launch/example.launch.py -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/launch
+[1.299s] creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models
+[1.299s] creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models/vehicle
+[1.299s] copying models/vehicle/model.sdf -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models/vehicle
+[1.299s] copying models/vehicle/model.config -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models/vehicle
+[1.299s] creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/worlds
+[1.300s] copying worlds/vehicle.sdf -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/worlds
+[1.300s] copying worlds/sonoma.sdf -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/worlds
+[1.300s] creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/config
+[1.300s] running install_egg_info
+[1.303s] Copying ../build/simple_example/simple_example.egg-info to /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example-0.0.1-py3.10.egg-info
+[1.305s] running install_scripts
+[1.344s] Installing controller_node script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+[1.344s] Installing process_image script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+[1.344s] Installing ros_gazebo_ex script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+[1.344s] Installing track_controller script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+[1.345s] writing list of installed files to '/home/developer/ros2_ws/src/build/simple_example/install.log'
+[1.391s] Invoked command in '/home/developer/ros2_ws/src/simple_example' returned '0': PYTHONPATH=/home/developer/ros2_ws/src/build/simple_example/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../build/simple_example build --build-base /home/developer/ros2_ws/src/build/simple_example/build install --record /home/developer/ros2_ws/src/build/simple_example/install.log --single-version-externally-managed install_data

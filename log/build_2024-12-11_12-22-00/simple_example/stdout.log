@@ -1,0 +1,57 @@
+running egg_info
+creating ../build/simple_example/simple_example.egg-info
+writing ../build/simple_example/simple_example.egg-info/PKG-INFO
+writing dependency_links to ../build/simple_example/simple_example.egg-info/dependency_links.txt
+writing entry points to ../build/simple_example/simple_example.egg-info/entry_points.txt
+writing requirements to ../build/simple_example/simple_example.egg-info/requires.txt
+writing top-level names to ../build/simple_example/simple_example.egg-info/top_level.txt
+writing manifest file '../build/simple_example/simple_example.egg-info/SOURCES.txt'
+reading manifest file '../build/simple_example/simple_example.egg-info/SOURCES.txt'
+writing manifest file '../build/simple_example/simple_example.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/developer/ros2_ws/src/build/simple_example/build
+creating /home/developer/ros2_ws/src/build/simple_example/build/lib
+creating /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+copying simple_example/simple_example_node.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+copying simple_example/track_controller_node.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+copying simple_example/ControllerNode.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+copying simple_example/__init__.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+copying simple_example/ProcessImageNode.py -> /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example
+running install
+running install_lib
+creating /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/simple_example_node.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/track_controller_node.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/ControllerNode.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/__init__.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+copying /home/developer/ros2_ws/src/build/simple_example/build/lib/simple_example/ProcessImageNode.py -> /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example
+byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/simple_example_node.py to simple_example_node.cpython-310.pyc
+byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/track_controller_node.py to track_controller_node.cpython-310.pyc
+byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/ControllerNode.py to ControllerNode.cpython-310.pyc
+byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example/ProcessImageNode.py to ProcessImageNode.cpython-310.pyc
+running install_data
+creating /home/developer/ros2_ws/src/install/simple_example/share/ament_index
+creating /home/developer/ros2_ws/src/install/simple_example/share/ament_index/resource_index
+creating /home/developer/ros2_ws/src/install/simple_example/share/ament_index/resource_index/packages
+copying resource/simple_example -> /home/developer/ros2_ws/src/install/simple_example/share/ament_index/resource_index/packages
+copying package.xml -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example
+creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/launch
+copying launch/example.launch.py -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/launch
+creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models
+creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models/vehicle
+copying models/vehicle/model.sdf -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models/vehicle
+copying models/vehicle/model.config -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/models/vehicle
+creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/worlds
+copying worlds/vehicle.sdf -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/worlds
+copying worlds/sonoma.sdf -> /home/developer/ros2_ws/src/install/simple_example/share/simple_example/worlds
+creating /home/developer/ros2_ws/src/install/simple_example/share/simple_example/config
+running install_egg_info
+Copying ../build/simple_example/simple_example.egg-info to /home/developer/ros2_ws/src/install/simple_example/lib/python3.10/site-packages/simple_example-0.0.1-py3.10.egg-info
+running install_scripts
+Installing controller_node script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+Installing process_image script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+Installing ros_gazebo_ex script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+Installing track_controller script to /home/developer/ros2_ws/src/install/simple_example/lib/simple_example
+writing list of installed files to '/home/developer/ros2_ws/src/build/simple_example/install.log'
