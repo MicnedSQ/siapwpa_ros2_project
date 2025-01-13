@@ -4,7 +4,6 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 from centroids_msg.msg import Centroids
 from skimage.morphology import skeletonize
 from fil_finder import FilFinder2D
@@ -44,8 +43,8 @@ class ProcessImageNode(Node):
     self.publisher.publish(msg)
 
   def display_image(self):
-    cv2.namedWindow("Frame", cv2.WINDOW_NORMAL)
-    cv2.imshow("Frame", self.frame)
+    # cv2.namedWindow("Frame", cv2.WINDOW_NORMAL)
+    # cv2.imshow("Frame", self.frame)
     # cv2.imwrite("src/test1.png", self.frame)
     cv2.waitKey(1)
 
@@ -192,15 +191,13 @@ class ProcessImageNode(Node):
                   i += 1
            
     num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(skeleton)
-
+    self.get_logger().info('NO labels: %s' % str(num_labels))
     areas = stats[:, cv2.CC_STAT_AREA]
     sorted_indices = np.argsort(areas)[::-1]
 
     largest_components_mask = np.zeros_like(skeleton)
 
-    # centroid_lst = []
-    
-    for i in sorted_indices[1:3]:
+    for i in sorted_indices[1:num_labels]:
         component_label = i
         largest_components_mask = np.zeros_like(skeleton)
         largest_components_mask[labels == component_label] = 255
@@ -210,10 +207,25 @@ class ProcessImageNode(Node):
             cx = int(M['m10'] / M['m00'])
             cy = int(M['m01'] / M['m00'])
             centroids_list.append((cx * 2, cy * 2))
-            
-            cv2.circle(out_img, (cx, cy), 10, (0, 0, 255), -1)
-        else:
-            centroids_list.append((0, 0))
+
+    self.get_logger().info('NO centroids: %s' % str(len(centroids_list)))
+
+    centroid_left_x = 0
+    centroid_left_y = 0
+    centroid_right_x = 1920
+    centroid_right_y = 1080
+
+    for cx, cy in centroids_list:
+      if (cx < 1920 / 2 and cx > centroid_left_x):
+        centroid_left_x = cx
+        centroid_left_y = cy
+      if (cx > 1920 / 2 and cx < centroid_right_x):
+        centroid_right_x = cx
+        centroid_right_y = cy
+
+    cv2.circle(out_img, (int(centroid_left_x / 2), int(centroid_left_y / 2)), 10, (255, 0, 0), -1)
+    cv2.circle(out_img, (int(centroid_right_x / 2), int(centroid_right_y / 2)), 10, (0, 0, 255), -1)
+    centroids_to_send = [(centroid_left_x, centroid_left_y), (centroid_right_x, centroid_right_y)]
 
     skeleton_with_largest_components = cv2.bitwise_and(skeleton, largest_components_mask)
 
@@ -226,7 +238,7 @@ class ProcessImageNode(Node):
     cv2.namedWindow("Skeletonized Image", cv2.WINDOW_NORMAL)
     cv2.imshow("Skeletonized Image", skeleton)
     cv2.waitKey(1)
-    self.send_msg(centroids_list)
+    self.send_msg(centroids_to_send)
 
     cv2.namedWindow("Birdseye out_img", cv2.WINDOW_NORMAL)
     cv2.imshow("Birdseye out_img", out_img)
