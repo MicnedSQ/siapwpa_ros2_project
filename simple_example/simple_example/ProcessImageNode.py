@@ -48,8 +48,8 @@ class ProcessImageNode(Node):
 
   def perspectiveWarp(self):
     src = np.float32([
-        [520, 560], 
-        [1300, 560],
+        [520, 600], 
+        [1300, 600],
         [0, 840], 
         [1920, 840]
         ])
@@ -211,21 +211,27 @@ class ProcessImageNode(Node):
         centroid_right_x = cx
         centroid_right_y = cy
 
+    middle_centroid = int((centroid_left_x + centroid_right_x) / 2)
+
+    # Center line
+    cv2.line(out_img, (int(1920 / 4), 0), (int(1920 / 4), 1080), (0, 255, 0), 10)
+
+    # Middle centroid
+    cv2.circle(out_img, (int(middle_centroid / 2), int(1080 / 4)), 10, (255, 0, 0), -1)
+
     cv2.circle(out_img, (int(centroid_left_x / 2), int(centroid_left_y / 2)), 10, (255, 0, 0), -1)
     cv2.circle(out_img, (int(centroid_right_x / 2), int(centroid_right_y / 2)), 10, (0, 0, 255), -1)
-    centroids_to_send = [(centroid_left_x, centroid_left_y), (centroid_right_x, centroid_right_y)]
+    centroids_to_send = [(middle_centroid, int(1080 / 2))]
 
-    skeleton_with_largest_components = cv2.bitwise_and(skeleton, largest_components_mask)
+    # skeleton_with_largest_components = cv2.bitwise_and(skeleton, largest_components_mask)
+    # labels_colored = cv2.applyColorMap(skeleton_with_largest_components.astype(np.uint8), cv2.COLORMAP_JET)
+    # cv2.namedWindow("Largest Connected Components", cv2.WINDOW_NORMAL)
+    # cv2.imshow("Largest Connected Components", labels_colored)
+    # cv2.waitKey(1)
 
-    labels_colored = cv2.applyColorMap(skeleton_with_largest_components.astype(np.uint8), cv2.COLORMAP_JET)
-
-    cv2.namedWindow("Largest Connected Components", cv2.WINDOW_NORMAL)
-    cv2.imshow("Largest Connected Components", labels_colored)
-    cv2.waitKey(1)
-
-    cv2.namedWindow("Skeletonized Image", cv2.WINDOW_NORMAL)
-    cv2.imshow("Skeletonized Image", skeleton)
-    cv2.waitKey(1)
+    # cv2.namedWindow("Skeletonized Image", cv2.WINDOW_NORMAL)
+    # cv2.imshow("Skeletonized Image", skeleton)
+    # cv2.waitKey(1)
     self.send_msg(centroids_to_send)
 
     cv2.namedWindow("Birdseye out_img", cv2.WINDOW_NORMAL)
