@@ -11,7 +11,7 @@ class ControllerNode(Node):
 
     self.cmd_vel_publisher = self.create_publisher(Twist, "/cmd_vel", 10)
 
-    self.kp = 0.0003
+    self.kp = 0.0001
     self.ki = 0.0007
     self.kd = 0.007
 
@@ -47,14 +47,17 @@ class ControllerNode(Node):
 
     center = (centroid_left[0] + centroid_right[0]) / 2
 
-    # if left and right:
-    #   center = (centroid_left[0] + centroid_right[0]) / 2
-    # elif left:
-    #    center = centroid_left[0] + 100
-    # else:
-    #    center = centroid_right[0] - 100
-
     screen_center = 1920 / 2
+    
+    if left and right:
+        center = (centroid_left[0] + centroid_right[0]) / 2
+    elif left:
+        center = (centroid_left[0] + screen_center) / 2
+    elif right:
+        center = (centroid_right[0] + screen_center) / 2
+    else:
+        center = screen_center
+
 
     error = center - screen_center
 

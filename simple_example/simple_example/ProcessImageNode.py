@@ -6,8 +6,6 @@ import cv2
 import numpy as np
 from centroids_msg.msg import Centroids
 from skimage.morphology import skeletonize
-from fil_finder import FilFinder2D
-import astropy.units as u
 
 class ProcessImageNode(Node):
   def __init__(self):
@@ -114,16 +112,6 @@ class ProcessImageNode(Node):
 
     binary_bool = binary > 0
     skeleton = skeletonize(binary_bool).astype(np.uint8) * 255
-    fil = FilFinder2D(skeleton, distance=250 * u.pc, mask=skeleton)
-    fil.preprocess_image(flatten_percent=85)
-    fil.create_mask(border_masking=True, verbose=False, use_existing_mask=True)
-    fil.medskel(verbose=False)
-    fil.analyze_skeletons(branch_thresh=40* u.pix, skel_thresh=10 * u.pix, prune_criteria='length')
-
-    cv2.imshow("Test", fil.skeleton, cmap='gray')
-    # cv2.contour(fil.skeleton_longpath, colors='r')
-    cv2.waitKey(1)
-
 
     branch_points = []
 
