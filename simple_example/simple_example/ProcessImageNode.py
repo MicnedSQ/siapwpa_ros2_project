@@ -221,7 +221,12 @@ class ProcessImageNode(Node):
 
     cv2.circle(out_img, (int(centroid_left_x / 2), int(centroid_left_y / 2)), 10, (255, 0, 0), -1)
     cv2.circle(out_img, (int(centroid_right_x / 2), int(centroid_right_y / 2)), 10, (0, 0, 255), -1)
-    centroids_to_send = [(middle_centroid, int(1080 / 2))]
+    
+    # One centorid sent
+    # centroids_to_send = [(middle_centroid, int(1080 / 2))]
+
+    # Two centroids sent
+    centroids_to_send = [(centroid_left_x, centroid_left_y), (centroid_right_x, centroid_right_y)]
 
     # skeleton_with_largest_components = cv2.bitwise_and(skeleton, largest_components_mask)
     # labels_colored = cv2.applyColorMap(skeleton_with_largest_components.astype(np.uint8), cv2.COLORMAP_JET)
